@@ -1,0 +1,229 @@
+:root {
+  --bg: #0b0f1a;
+  --card: rgba(255, 255, 255, 0.08);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --text: #e8edf6;
+  --muted: #a5afc2;
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  --radius: 16px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", "Rubik", Arial, sans-serif;
+  background: radial-gradient(circle at 10% 10%, #1a2240, #0b0f1a 50%),
+    radial-gradient(circle at 90% 20%, #1f2a52, #0b0f1a 55%);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 20px 60px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  background: rgba(20, 25, 45, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+  margin-bottom: 28px;
+}
+
+.brand {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.date {
+  font-size: 1rem;
+  color: var(--muted);
+}
+
+.content {
+  display: grid;
+  gap: 28px;
+}
+
+.section {
+  padding: 22px;
+  border-radius: var(--radius);
+  background: rgba(12, 16, 30, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.section-badge {
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  position: relative;
+  padding: 18px 16px;
+  border-radius: var(--radius);
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.16;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), transparent);
+  pointer-events: none;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+
+.card-label {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.card-year {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.card-desc {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #dbe3f4;
+}
+
+.error {
+  margin-top: 20px;
+  padding: 16px 20px;
+  background: rgba(255, 80, 90, 0.15);
+  border: 1px solid rgba(255, 80, 90, 0.3);
+  border-radius: var(--radius);
+  color: #ffd7da;
+}
+
+/* Accent colors per category */
+.section[data-accent="cinema_tv"] .section-title,
+.section[data-accent="cinema_tv"] .card-title {
+  color: #7c5cff;
+}
+
+.section[data-accent="music_sound"] .section-title,
+.section[data-accent="music_sound"] .card-title {
+  color: #22d3ee;
+}
+
+.section[data-accent="famous_people"] .section-title,
+.section[data-accent="famous_people"] .card-title {
+  color: #f59e0b;
+}
+
+.section[data-accent="sports_records"] .section-title,
+.section[data-accent="sports_records"] .card-title {
+  color: #22c55e;
+}
+
+.section[data-accent="literature_writing"] .section-title,
+.section[data-accent="literature_writing"] .card-title {
+  color: #f472b6;
+}
+
+.section[data-accent="history_tech"] .section-title,
+.section[data-accent="history_tech"] .card-title {
+  color: #60a5fa;
+}
+
+/* Skeleton loading */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16), transparent);
+  transform: translateX(-100%);
+  animation: shimmer 1.6s infinite;
+}
+
+.skeleton-line {
+  height: 12px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  margin-bottom: 10px;
+}
+
+.skeleton-line.short {
+  width: 40%;
+}
+
+.skeleton-line.medium {
+  width: 65%;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (max-width: 768px) {
+  .topbar {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+}
