@@ -1,11 +1,16 @@
+
 :root {
-  --bg: #0b0f1a;
-  --card: rgba(255, 255, 255, 0.08);
-  --card-border: rgba(255, 255, 255, 0.12);
-  --text: #e8edf6;
-  --muted: #a5afc2;
-  --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
-  --radius: 16px;
+  --bg: #f4f1e8;
+  --text: #1a1a1a;
+  --muted: #555;
+  --border: #ccc;
+  --headline: #000;
+  --accent-cinema: #8B4513;
+  --accent-music: #4682B4;
+  --accent-people: #D2691E;
+  --accent-sports: #2E8B57;
+  --accent-literature: #DAA520;
+  --accent-history: #708090;
 }
 
 * {
@@ -14,216 +19,187 @@
   padding: 0;
 }
 
-body {
-  font-family: "Segoe UI", "Rubik", Arial, sans-serif;
-  background: radial-gradient(circle at 10% 10%, #1a2240, #0b0f1a 50%),
-    radial-gradient(circle at 90% 20%, #1f2a52, #0b0f1a 55%);
-  color: var(--text);
-  min-height: 100vh;
-}
-
-.app {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 32px 20px 60px;
-}
-
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 22px;
-  background: rgba(20, 25, 45, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(12px);
-  margin-bottom: 28px;
-}
-
-.brand {
-  font-size: 1.6rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.date {
-  font-size: 1rem;
-  color: var(--muted);
-}
-
-.content {
-  display: grid;
-  gap: 28px;
-}
-
-.section {
-  padding: 22px;
-  border-radius: var(--radius);
-  background: rgba(12, 16, 30, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(10px);
-}
-
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-.section-title {
-  font-size: 1.3rem;
-  font-weight: 700;
-}
-
-.section-badge {
-  font-size: 0.85rem;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 18px;
-}
-
-.card {
-  position: relative;
-  padding: 18px 16px;
-  border-radius: var(--radius);
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(14px);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden;
-}
-
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0.16;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), transparent);
-  pointer-events: none;
-}
-
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
-}
-
-.card-label {
-  font-size: 0.85rem;
-  color: var(--muted);
-  margin-bottom: 8px;
-}
-
-.card-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.card-year {
-  font-size: 0.9rem;
-  color: var(--muted);
-  margin-bottom: 10px;
-}
-
-.card-desc {
-  font-size: 0.95rem;
-  line-height: 1.55;
-  color: #dbe3f4;
-}
-
-.error {
-  margin-top: 20px;
-  padding: 16px 20px;
-  background: rgba(255, 80, 90, 0.15);
-  border: 1px solid rgba(255, 80, 90, 0.3);
-  border-radius: var(--radius);
-  color: #ffd7da;
-}
-
-/* Accent colors per category */
-.section[data-accent="cinema_tv"] .section-title,
-.section[data-accent="cinema_tv"] .card-title {
-  color: #7c5cff;
-}
-
-.section[data-accent="music_sound"] .section-title,
-.section[data-accent="music_sound"] .card-title {
-  color: #22d3ee;
-}
-
-.section[data-accent="famous_people"] .section-title,
-.section[data-accent="famous_people"] .card-title {
-  color: #f59e0b;
-}
-
-.section[data-accent="sports_records"] .section-title,
-.section[data-accent="sports_records"] .card-title {
-  color: #22c55e;
-}
-
-.section[data-accent="literature_writing"] .section-title,
-.section[data-accent="literature_writing"] .card-title {
-  color: #f472b6;
-}
-
-.section[data-accent="history_tech"] .section-title,
-.section[data-accent="history_tech"] .card-title {
-  color: #60a5fa;
-}
-
-/* Skeleton loading */
-.skeleton {
-  position: relative;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.skeleton::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16), transparent);
-  transform: translateX(-100%);
-  animation: shimmer 1.6s infinite;
-}
-
-.skeleton-line {
-  height: 12px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.12);
-  margin-bottom: 10px;
-}
-
-.skeleton-line.short {
-  width: 40%;
-}
-
-.skeleton-line.medium {
-  width: 65%;
-}
-
-@keyframes shimmer {
-  100% {
-    transform: translateX(100%);
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (max-width: 768px) {
-  .topbar {
-    flex-direction: column;
-    gap: 8px;
-    align-items: flex-start;
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background: var(--bg) url('data:image/svg+xml,%3Csvg width="6" height="6" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23dcd9d1" fill-opacity="0.4" fill-rule="evenodd"%3E%3Cpath d="M5 0h1L0 6V5zM6 5v1H5z"/%3E%3C/g%3E%3C/svg%3E');
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.app {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid var(--border);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+.topbar {
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--headline);
+  margin-bottom: 20px;
+}
+
+.brand {
+  font-size: 3.5rem;
+  font-weight: 700;
+  font-family: 'Playfair Display', serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.date {
+  font-size: 1.1rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.content {
+  column-count: 3;
+  column-gap: 40px;
+  column-rule: 1px solid var(--border);
+}
+
+.section {
+  break-inside: avoid-column;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.section-header {
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-family: 'Playfair Display', serif;
+}
+
+.cards {
+    display: block;
+}
+
+.card {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+  animation: fadeIn 0.8s ease-out forwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:last-child {
+  border-bottom: none;
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.card-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 3px;
+    margin-bottom: 15px;
+    filter: grayscale(100%);
+    transition: filter 0.3s ease;
+  background: #e9e5db;
+}
+
+.card:hover .card-image {
+    filter: grayscale(0%);
+}
+
+.card-label {
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.card-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.card-year {
+  font-size: 1rem;
+  color: var(--muted);
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.card-desc {
+  font-size: 1rem;
+  text-align: justify;
+}
+
+.error {
+  background: #fff0f0;
+  border: 1px solid #e0b0b0;
+  padding: 15px;
+  color: #a04040;
+}
+
+.footer {
+  margin-top: 30px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.footer a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dashed currentColor;
+}
+
+.footer a:hover {
+  color: var(--headline);
+  border-bottom-style: solid;
+}
+
+/* Accent colors per category */
+.section[data-accent="cinema_tv"] .section-title { color: var(--accent-cinema); }
+.section[data-accent="music_sound"] .section-title { color: var(--accent-music); }
+.section[data-accent="famous_people"] .section-title { color: var(--accent-people); }
+.section[data-accent="sports_records"] .section-title { color: var(--accent-sports); }
+.section[data-accent="literature_writing"] .section-title { color: var(--accent-literature); }
+.section[data-accent="history_tech"] .section-title { color: var(--accent-history); }
+
+
+@media (max-width: 800px) {
+  .content {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 600px) {
+  .content {
+    column-count: 1;
+  }
+  .brand {
+    font-size: 2.5rem;
   }
 }

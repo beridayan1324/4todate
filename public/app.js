@@ -1,6 +1,7 @@
 const contentEl = document.getElementById("content");
 const dateDisplayEl = document.getElementById("dateDisplay");
 const errorEl = document.getElementById("error");
+const imageCreditEl = document.getElementById("imageCredit");
 
 const skeletonCategories = [
   "קולנוע וטלוויזיה",
@@ -19,6 +20,10 @@ function createElement(tag, className) {
 
 function renderSkeleton() {
   contentEl.innerHTML = "";
+  if (imageCreditEl) {
+    imageCreditEl.hidden = true;
+    imageCreditEl.textContent = "";
+  }
 
   skeletonCategories.forEach((title) => {
     const section = createElement("section", "section");
@@ -52,9 +57,33 @@ function renderSkeleton() {
   });
 }
 
+function renderImageCredit(credit) {
+  if (!imageCreditEl) return;
+  if (!credit?.label) {
+    imageCreditEl.hidden = true;
+    imageCreditEl.textContent = "";
+    return;
+  }
+
+  imageCreditEl.hidden = false;
+  imageCreditEl.textContent = "קרדיט תמונות: ";
+
+  if (credit.url) {
+    const link = createElement("a");
+    link.href = credit.url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = credit.label;
+    imageCreditEl.appendChild(link);
+  } else {
+    imageCreditEl.textContent += credit.label;
+  }
+}
+
 function renderContent(data) {
   contentEl.innerHTML = "";
   dateDisplayEl.textContent = data.dateDisplay || "";
+  renderImageCredit(data.imageCredit);
 
   data.categories.forEach((category) => {
     const section = createElement("section", "section");
@@ -72,6 +101,14 @@ function renderContent(data) {
 
     category.items.forEach((item) => {
       const card = createElement("div", "card");
+
+      const image = createElement("img", "card-image");
+      image.src = item?.image?.url
+        ? `/api/image?url=${encodeURIComponent(item.image.url)}`
+        : "";
+      image.alt = item.title;
+      image.loading = "lazy";
+      card.appendChild(image);
 
       const label = createElement("div", "card-label");
       label.textContent = item.label;
