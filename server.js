@@ -195,7 +195,10 @@ const IMAGE_CREDIT = {
   url: "https://pollinations.ai/",
 };
 
-const IMAGE_BASE_URL = "https://pollinations.ai/prompt/";
+const IMAGE_BASE_URL = "https://gen.pollinations.ai/image/";
+const IMAGE_MODEL = "flux";
+const POLLINATIONS_API_KEY =
+  process.env.POLLINATIONS_API_KEY || process.env.POLLI_API_KEY || "";
 
 function hashSeed(input) {
   let hash = 0;
@@ -246,7 +249,9 @@ function buildImagePrompt(item, categoryTitle, dateDisplay) {
 }
 function normalizeImageUrl(url) {
   if (!url) return url;
-  return url.replace("https://image.pollinations.ai/prompt/", IMAGE_BASE_URL);
+  return url
+    .replace("https://pollinations.ai/prompt/", IMAGE_BASE_URL)
+    .replace("https://image.pollinations.ai/prompt/", IMAGE_BASE_URL);
 }
 
 function attachImages(payload) {
@@ -275,9 +280,13 @@ function attachImages(payload) {
         }
         const prompt = buildImagePrompt(enrichedItem, category.title, payload.dateDisplay);
         const seed = hashSeed(`${category.id}-${item.title}-${item.year}`);
-        const url = `${IMAGE_BASE_URL}${encodeURIComponent(
-          prompt
-        )}?width=600&height=400&seed=${seed}`;
+        const params = new URLSearchParams({
+          width: "600",
+          height: "400",
+          seed: String(seed),
+          model: IMAGE_MODEL,
+        });
+        const url = `${IMAGE_BASE_URL}${encodeURIComponent(prompt)}?${params.toString()}`;
         return {
           ...enrichedItem,
           image: {
@@ -445,9 +454,43 @@ app.get("/api/today", async (req, res) => {
 function isAllowedImageUrl(value) {
   try {
     const url = new URL(value);
-    return url.protocol === "https:" && url.hostname.endsWith("pollinations.ai");
+    const allowedHosts = new Set([
+      "gen.pollinations.ai",
+      "image.pollinations.ai",
+      "pollinations.ai",
+    ]);
+    return url.protocol === "https:" && allowedHosts.has(url.hostname);
   } catch {
     return false;
+  }
+}
+
+function decodeUrlParam(value) {
+  let decoded = String(value || "");
+  for (let i = 0; i < 2; i += 1) {
+    try {
+      const next = decodeURIComponent(decoded);
+      if (next === decoded) break;
+      decoded = next;
+    } catch {
+      break;
+    }
+  }
+  return decoded;
+}
+
+function addKeyParamIfNeeded(value) {
+  if (!POLLINATIONS_API_KEY || !POLLINATIONS_API_KEY.startsWith("pk_")) {
+    return value;
+  }
+  try {
+    const url = new URL(value);
+    if (!url.searchParams.has("key")) {
+      url.searchParams.set("key", POLLINATIONS_API_KEY);
+    }
+    return url.toString();
+  } catch {
+    return value;
   }
 }
 
@@ -458,14 +501,24 @@ app.get("/api/image", (req, res) => {
     return;
   }
 
-  const targetUrl = decodeURIComponent(String(urlParam));
+  const targetUrl = addKeyParamIfNeeded(decodeUrlParam(urlParam));
   if (!isAllowedImageUrl(targetUrl)) {
     res.status(400).json({ error: "Invalid image host" });
     return;
   }
 
+  const useAuthHeader =
+    POLLINATIONS_API_KEY && !POLLINATIONS_API_KEY.startsWith("pk_");
+  const requestOptions = {
+    headers: {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      Accept: "image/*,*/*;q=0.8",
+      ...(useAuthHeader ? { Authorization: `Bearer ${POLLINATIONS_API_KEY}` } : {}),
+    },
+  };
+
   https
-    .get(targetUrl, (imageRes) => {
+    .get(targetUrl, requestOptions, (imageRes) => {
       if (imageRes.statusCode && imageRes.statusCode >= 400) {
         res.status(502).end();
         imageRes.resume();
